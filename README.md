@@ -20,7 +20,7 @@ You need to copy the following snippet and paste it in your `~/.siriproxy/config
             # optional
 	        aliases: 
 	        - "my wifes iphone"
-	      him iphone:
+	      his iphone:
 	        username: 'him@apple.com'
 	        password: '***'
         # wait_msg: "Please wait while I try to find %s."
