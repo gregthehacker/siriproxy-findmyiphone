@@ -11,21 +11,21 @@ This becomes very handy as the sound plays at high volume no matter if the iPhon
 
 You need to copy the following snippet and paste it in your `~/.siriproxy/config.yml`
 
-	  - name: 'FindMyIPhone'
-	    git: 'git://github.com/mgbowman/siriproxy-findmyiphone.git'
-	    iphones:	    
-	      her iphone:
-	        username: 'her@apple.com'
-	        password: '***'
-			# optional
-	        aliases: 
-	        - "my wifes iphone"
-	      him iphone:
-	        username: 'him@apple.com'
-	        password: '***'
-        # wait_msg: "Please wait while I try to find %s."
-        # ok_msg: "Ok. I found %s."
-        # err_msg: "I'm sorry but I could not find %s."
+  - name: 'FindMyIPhone'
+    git: 'git://github.com/mgbowman/siriproxy-findmyiphone.git'
+    iphones:	    
+      her iphone:
+        username: 'her@apple.com'
+        password: '***'
+        # optional
+        aliases: 
+        - "my wifes iphone"
+      him iphone:
+        username: 'him@apple.com'
+        password: '***'
+    # wait_msg: "Please wait while I try to find %s."
+    # ok_msg: "Ok. I found %s."
+    # err_msg: "I'm sorry but I could not find %s."
 
 This allows you to say *"Find my wife's iPhone"* and it will look for a device named "Her iPhone"
 
