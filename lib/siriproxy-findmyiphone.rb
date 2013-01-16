@@ -40,7 +40,7 @@ class SiriProxy::Plugin::FindMyIPhone < SiriProxy::Plugin
               log "Found Device ##{device_num} = #{device['name']}"
               fmi.sendMessage(device_num)
             end
-            say target ? @ok_msg % iphone_name : @err_msg % iphone_name 
+            say device_num ? @ok_msg % iphone_name : @err_msg % iphone_name 
             request_completed
           end
         rescue Timeout::Error
