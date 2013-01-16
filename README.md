@@ -26,4 +26,4 @@ This allows you to say *"Find my wife's iPhone"* and it will look for a device n
 
 ## Credits
 
-Most of Find My iPhone Ruby implementation is credited to <a href="https://github.com/hpop/rosumi" target="_blank">hpop's rosumi</a>.
+Most of the Find My iPhone implementation is credited to <a href="https://github.com/hpop/rosumi" target="_blank">hpop's rosumi</a>.
