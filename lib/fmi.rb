@@ -50,8 +50,8 @@ class FMI
            "validRegion" => true
        },
     }
-    
-		auth = Base64.encode64(user+':'+pass)
+
+    auth = Base64.encode64(user+':'+pass)
     @headers = {
       'Content-Type' => 'application/json; charset=utf-8',
       'X-Apple-Find-Api-Ver' => '2.0',
