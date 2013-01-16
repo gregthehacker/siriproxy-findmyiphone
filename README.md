@@ -4,7 +4,7 @@ siriproxy-findmyiphone
 ## About
 ___
 
-This is a [Find My iPhone](http://www.apple.com/icloud/features/find-my-iphone.html) plugin for [Siri Proxy](https://github.com/plamoni/SiriProxy). It gives you the ability to say (something like) *"Find my wife's iPhone"* and Siri will trigger a "Play Sound" action on the device just as you would do in the [iCloud web interface](https://www.icloud.com/).
+This is a <a href="http://www.apple.com/icloud/features/find-my-iphone.html" target="_blank">Find My iPhone</a> plugin for <a href="https://github.com/plamoni/SiriProxy" target="_blank">Siri Proxy</a>. It gives you the ability to say (something like) *"Find my wife's iPhone"* and Siri will trigger a "Play Sound" action on the device just as you would do in the <a href="https://www.icloud.com" target="_blank">iCloud web interface</a>.
 
 This becomes very handy as the sound plays at high volume no matter if the iPhone is in silent mode. This has proven very useful in my home where I am constantly asked "Can you call my phone?" as my wife desperately searches for her iPhone which is usually in silent mode.
 
