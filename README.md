@@ -21,8 +21,8 @@ You need to copy the following snippet and paste it in your `~/.siriproxy/config
 	        aliases: 
 	        - "my wifes iphone"
 	      him iphone:
-	          username: 'him@apple.com'
-	          password: '***'
+	        username: 'him@apple.com'
+	        password: '***'
         # wait_msg: "Please wait while I try to find %s."
         # ok_msg: "Ok. I found %s."
         # err_msg: "I'm sorry but I could not find %s."
