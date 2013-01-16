@@ -22,7 +22,7 @@ You need to copy the following snippet and paste it in your `~/.siriproxy/config
 
 This allows you to say *"Find my wife's iPhone"* and it will look for a device named "Laura's iPhone"
 
-**Note** that cases and quotes are ignored - `wife's iPhone == wifes iphone` and `Laura's iPhone == lauras iphone`
+**Note** that cases and quotes are ignored. Therefore `wife's iPhone == wifes iphone` and `Laura's iPhone == lauras iphone` are both true.
 
 ## Credits
 
