@@ -6,38 +6,50 @@ require_relative 'fmi'
 class SiriProxy::Plugin::FindMyIPhone < SiriProxy::Plugin
   
   def initialize(config)
-    @iphones = config['iphones'] || {}
+    @credentials = config['iphones'] || {}
+    
+    @wait_msg = config['wait_msg'] || "Please wait while I try to find %s."
+    @ok_msg   = config['ok_msg']   || "Ok. I found %s."
+    @err_msg  = config['err_msg']  || "I'm sorry but I could not find %s."
+    
+    # mgb: we must build a alias => name index
+    @aliases = {}
+    @credentials.each do |name,creds| 
+      creds['aliases'] ||= []
+      # delete returns the value
+      (creds.delete 'aliases').each { |a| @aliases[a] = name }
+    end
   end
 
-  listen_for /find (.* (?:iphone|ipad))/i do |iphone|
-    name = scrub iphone
-    iphone = iphone.gsub('my', 'your')    
-    if @iphones[name]
-      say "Please wait while I try to find #{iphone}."
-      username = @iphones[name]['username']
-      password = @iphones[name]['password']
-      name = @iphones[name]['device'] || name
+  listen_for /find (.* (?:iphone|ipad))/i do |iphone_name|
+    device_name = scrub(iphone_name)
+    device_name = @aliases[device_name] || device_name
+    auth = @credentials[device_name]
+    # mgb: have siri say 'your iphone' when you ask about 'my iphone' :)
+    iphone_name = iphone_name.gsub('my', 'your')
+    if auth
+      say @wait_msg % iphone_name
       Thread.new {
         begin
           Timeout::timeout(30) do
-            fmi = FMI.new(username, password)
-            target = nil            
-            fmi.devices.each_with_index { |device, num| target = num if scrub(device['name']) == name }
-            if target
-              device = fmi.devices[target]
-              log "Found Target Device #{target} = #{device['name']}"
-              fmi.sendMessage(target)
+            fmi = FMI.new(auth['username'], auth['password'])
+            device_num = nil            
+            fmi.devices.each_with_index { |device, num| device_num = num if scrub(device['name']) == device_name }
+            if device_num
+              device = fmi.devices[device_num]
+              log "Found Device ##{device_num} = #{device['name']}"
+              fmi.sendMessage(device_num)
             end
-            say target ? "Ok. I found #{iphone}." : "I'm sorry but I could not find #{iphone}." 
+            say target ? @ok_msg % iphone_name : @err_msg % iphone_name 
             request_completed
           end
         rescue Timeout::Error
-           say "I'm sorry but I could not find #{iphone}."
+           say @err_msg % iphone_name
            request_completed
         end
       }
     else
-      say "I'm sorry but I could not find #{iphone}"
+      say @err_msg % iphone_name
       request_completed
     end
 

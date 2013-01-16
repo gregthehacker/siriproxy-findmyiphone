@@ -14,15 +14,22 @@ You need to copy the following snippet and paste it in your `~/.siriproxy/config
 	  - name: 'FindMyIPhone'
 	    git: 'git://github.com/mgbowman/siriproxy-findmyiphone.git'
 	    iphones:	    
-	    	my wifes iphone:
-	    		username: 'id@apple.com'
-	    		password: 'password'
-	    		# optional
-				device: 'lauras iphone'
+	      her iphone:
+	        username: 'her@apple.com'
+	        password: '***'
+			# optional
+	        aliases: 
+	        - "my wifes iphone"
+	      him iphone:
+	          username: 'him@apple.com'
+	          password: '***'
+        # wait_msg: "Please wait while I try to find %s."
+        # ok_msg: "Ok. I found %s."
+        # err_msg: "I'm sorry but I could not find %s."
 
-This allows you to say *"Find my wife's iPhone"* and it will look for a device named "Laura's iPhone"
+This allows you to say *"Find my wife's iPhone"* and it will look for a device named "Her iPhone"
 
-**Note** that cases and quotes are ignored. Therefore `wife's iPhone == wifes iphone` and `Laura's iPhone == lauras iphone` are both true.
+**Note** that cases and quotes are ignored. Therefore `wife's iPhone == wifes iphone` and `Her iPhone == her iphone` are both true.
 
 ## Credits
 
