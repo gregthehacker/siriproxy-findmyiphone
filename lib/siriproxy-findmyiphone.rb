@@ -9,7 +9,7 @@ class SiriProxy::Plugin::FindMyIPhone < SiriProxy::Plugin
     @iphones = config['iphones'] || {}
   end
 
-  listen_for /find (.* iphone|ipad)/i do |iphone|
+  listen_for /find (.* (?:iphone|ipad))/i do |iphone|
     name = scrub iphone
     iphone = iphone.gsub('my', 'your')    
     if @iphones[name]
