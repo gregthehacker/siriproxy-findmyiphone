@@ -23,6 +23,53 @@ class SiriProxy::Plugin::FindMyIPhone < SiriProxy::Plugin
     end
   end
 
+  listen_for /where(?:'s| is) (.* (?:iphone|ipad))/i do |iphone_name|
+    device_name = scrub(iphone_name)
+    device_name = @aliases[device_name] || device_name
+    auth = @credentials[device_name]
+    # mgb: have siri say 'your iphone' when you ask about 'my iphone' :)
+    iphone_name = iphone_name.gsub('my', 'your')
+    if auth
+      say @wait_msg % iphone_name
+      Thread.new {
+        begin
+          Timeout::timeout(60) do
+            fmi = FMI.new(auth['username'], auth['password'])
+            device_num = nil            
+            fmi.devices.each_with_index { |device, num| device_num = num if scrub(device['name']) == device_name }
+            add_views = nil
+            if device_num
+              loc = fmi.locate(device_num, 60)
+              log "Found Device ##{device_num} = #{fmi.devices[device_num]['name']} @ #{loc[:latitude]},#{loc[:longitude]}"
+              #def initialize(label="Apple", street="1 Infinite Loop", city="Cupertino", stateCode="CA", countryCode="US", postalCode="95014", latitude=37.3317031860352, longitude=-122.030089795589)
+              add_views = SiriAddViews.new
+              add_views.make_root(last_ref_id)
+              map_snippet = SiriMapItemSnippet.new
+              map_snippet.items << SiriMapItem.new
+              map_snippet.items[0].label = loc[:name]
+              map_snippet.items[0].location = SiriLocation.new(loc[:name], "", "", "", "", "", loc[:latitude], loc[:longitude])
+              utterance = SiriAssistantUtteranceView.new(@ok_msg % iphone_name)
+              add_views.views << utterance
+              add_views.views << map_snippet              
+            end
+            if add_views
+              send_object add_views
+            else 
+              say @err_msg % iphone_name 
+            end
+            request_completed
+          end
+        rescue Timeout::Error
+           say @err_msg % iphone_name
+           request_completed
+        end
+      }
+    else
+      say @err_msg % iphone_name
+      request_completed
+    end
+  end
+
   listen_for /find (.* (?:iphone|ipad))/i do |iphone_name|
     device_name = scrub(iphone_name)
     device_name = @aliases[device_name] || device_name
@@ -56,7 +103,6 @@ class SiriProxy::Plugin::FindMyIPhone < SiriProxy::Plugin
       say @err_msg % iphone_name
       request_completed
     end
-
   end
 
 private
