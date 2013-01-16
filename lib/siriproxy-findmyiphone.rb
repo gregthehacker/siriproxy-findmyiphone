@@ -8,6 +8,8 @@ class SiriProxy::Plugin::FindMyIPhone < SiriProxy::Plugin
   def initialize(config)
     @credentials = config['iphones'] || {}
     
+    @text = config['text'] || "Where am I and who are you?"
+  
     @wait_msg = config['wait_msg'] || "Please wait while I try to find %s."
     @ok_msg   = config['ok_msg']   || "Ok. I found %s."
     @err_msg  = config['err_msg']  || "I'm sorry but I could not find %s."
@@ -38,7 +40,9 @@ class SiriProxy::Plugin::FindMyIPhone < SiriProxy::Plugin
             if device_num
               device = fmi.devices[device_num]
               log "Found Device ##{device_num} = #{device['name']}"
-              fmi.sendMessage(device_num)
+              # mgb: change the subject based on device
+              type = device_name =~ /iphone$/ ? 'iPhone' : 'iPad'
+              fmi.sendMessage(device_num, "Find My #{type} Alert", @text)
             end
             say device_num ? @ok_msg % iphone_name : @err_msg % iphone_name 
             request_completed
