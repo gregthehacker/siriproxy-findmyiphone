@@ -14,6 +14,8 @@ class FMI
     @user = user
     @debug = debug
     @devices = nil
+    @keepalive = 60
+    @timestamp = nil
 
     @defaultClientContext = {
       'clientContext' => {
@@ -74,7 +76,7 @@ class FMI
   end
   
   def devices
-    update if @devices.nil?
+    update if @timestamp.nil? or @timestamp < Time.now - @keepalive
     @devices
   end
   
@@ -120,6 +122,7 @@ private
     json = post("/fmipservice/device/#{@user}/initClient", @defaultClientContext)
     @devices = [];
     json['content'].each { |device| @devices << device }
+    @timestamp = Time.now
   end
   
   def post(path, data)
