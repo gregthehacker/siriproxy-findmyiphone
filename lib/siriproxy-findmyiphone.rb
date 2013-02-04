@@ -23,7 +23,7 @@ class SiriProxy::Plugin::FindMyIPhone < SiriProxy::Plugin
     end
   end
 
-  listen_for "/where(?:'s| is) (.* (?:iphone|ipad))/i" do |iphone_name|
+  listen_for /where(?:'s| is) (.* (?:iphone|ipad))/i do |iphone_name|
     device_name = scrub(iphone_name)
     device_name = @aliases[device_name] || device_name
     auth = @credentials[device_name]
@@ -74,7 +74,7 @@ class SiriProxy::Plugin::FindMyIPhone < SiriProxy::Plugin
     end
   end
 
-  listen_for "/find (.* (?:iphone|ipad))/i" do |iphone_name|
+  listen_for /find (.* (?:iphone|ipad))/i do |iphone_name|
     device_name = scrub(iphone_name)
     device_name = @aliases[device_name] || device_name
     auth = @credentials[device_name]
