@@ -18,12 +18,12 @@ class SiriProxy::Plugin::FindMyIPhone < SiriProxy::Plugin
     @aliases = {}
     @credentials.each do |name,creds| 
       creds['aliases'] ||= []
-      # delete returns the value
-      (creds.delete 'aliases').each { |a| @aliases[a] = name }
+      creds['aliases'].each { |a| @aliases[a] = name }
     end
   end
 
   listen_for /where(?:'s| is) (.* (?:iphone|ipad))/i do |iphone_name|
+    log "Trying to find '#{iphone_name}'..."
     device_name = scrub(iphone_name)
     device_name = @aliases[device_name] || device_name
     auth = @credentials[device_name]
@@ -75,6 +75,7 @@ class SiriProxy::Plugin::FindMyIPhone < SiriProxy::Plugin
   end
 
   listen_for /find (.* (?:iphone|ipad))/i do |iphone_name|
+    log "Trying to find '#{iphone_name}'..."
     device_name = scrub(iphone_name)
     device_name = @aliases[device_name] || device_name
     auth = @credentials[device_name]
@@ -90,8 +91,8 @@ class SiriProxy::Plugin::FindMyIPhone < SiriProxy::Plugin
             device_num = nil            
             fmi.devices.each_with_index { |device, num| device_num = num if scrub(device['name']) == device_name }
             if device_num
-              log "Found device ##{device_num} = #{device['name']}"
               device = fmi.devices[device_num]
+              log "Found device ##{device_num} = #{device['name']}"
               # mgb: change the subject based on device
               type = device_name =~ /iphone$/ ? 'iPhone' : 'iPad'
               fmi.sendMessage(device_num, "Find My #{type} Alert", @text)
